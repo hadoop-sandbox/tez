@@ -44,6 +44,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
+import org.apache.tez.common.GuavaShim;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Maps;
@@ -1440,7 +1441,7 @@ class ShuffleScheduler {
                 FetcherOrderedGrouped fetcherOrderedGrouped = constructFetcherForHost(mapHost);
                 runningFetchers.add(fetcherOrderedGrouped);
                 ListenableFuture<Void> future = fetcherExecutor.submit(fetcherOrderedGrouped);
-                Futures.addCallback(future, new FetchFutureCallback(fetcherOrderedGrouped));
+                Futures.addCallback(future, new FetchFutureCallback(fetcherOrderedGrouped), GuavaShim.directExecutor());
               }
             }
           }
